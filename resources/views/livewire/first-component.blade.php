@@ -1,8 +1,9 @@
 <div class="container my-5">
     @if (session('success'))
-        <div class="alert alert-success" role="alert">
-            {{ session('success') }}
-        </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ session('success') }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
     @endif
 
     <form wire:submit='createNewUser' action="">
@@ -31,6 +32,18 @@
             @enderror
         </div>
 
+        <div class="form-group">
+            <input class="my-2 form-control" wire:model='photo' type="file">
+
+            @error('photo')
+            <span class="text-danger">{{ $message }}</span>
+            @enderror
+
+            @if ($photo)
+                <img style="width: 200px" class="my-2" src="{{ $photo->temporaryUrl() }}">
+            @endif
+        </div>
+
 
         <button class="btn btn-info">Create User</button>
     </form>
@@ -42,6 +55,7 @@
           <tr>
             <th>User Name</th>
             <th>Email</th>
+            <th>Image</th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +63,9 @@
                 <tr>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
+                    <td> <img src="{{asset('storage/app/photos/24FSfVrbMX6vOlCgO2vUVOTyI8BxW9F04ST1cI6w.jpg')}}" alt=""> </td>
+                    <td> <img src="{{ Storage::url($user->photo) }}" alt=""> </td>
+
                 </tr>
             @endforeach
         </tbody>
